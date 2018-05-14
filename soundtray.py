@@ -5,8 +5,8 @@ __version__ = '0.0.1'
 import libsoundtouch
 import sys
 
-from PyQt4.QtGui import QApplication, QSystemTrayIcon, QMenu, QMessageBox, QIcon, QInputDialog, QWidget, QCursor
-from PyQt4.QtCore import QCoreApplication, QObject, QThread, SIGNAL, pyqtSignal, pyqtSlot, QPoint
+from PyQt4.QtGui import QApplication, QSystemTrayIcon, QMenu, QMessageBox, QIcon, QInputDialog, QCursor
+from PyQt4.QtCore import QCoreApplication, QPoint
 
 # https://specifications.freedesktop.org/icon-naming-spec/icon-naming-spec-latest.html
 TRAY_ICON_NAME = 'multimedia-volume-control'
