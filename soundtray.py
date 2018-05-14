@@ -5,8 +5,13 @@ __version__ = '0.0.1'
 import libsoundtouch
 import sys
 
-from PyQt4.QtGui import QApplication, QSystemTrayIcon, QMenu, QMessageBox, QIcon, QInputDialog, QCursor
-from PyQt4.QtCore import QCoreApplication, QPoint
+try:
+    from PyQt5.QtGui import QIcon, QCursor, QIcon
+    from PyQt5.QtWidgets import QApplication, QMenu, QSystemTrayIcon, QInputDialog
+    from PyQt5.QtCore import QCoreApplication, QPoint
+except:
+    from PyQt4.QtGui import QApplication, QSystemTrayIcon, QMenu, QMessageBox, QIcon, QInputDialog, QCursor
+    from PyQt4.QtCore import QCoreApplication, QPoint
 
 # https://specifications.freedesktop.org/icon-naming-spec/icon-naming-spec-latest.html
 TRAY_ICON_NAME = 'multimedia-volume-control'
@@ -108,10 +113,15 @@ class SystemTrayIcon(QSystemTrayIcon):
 
     def eventFilter(self, QObject, QEvent):
         if QEvent.type() == QEvent.Wheel:
-            if QEvent.delta() > 0:
+            try:
+                delta = QEvent.angleDelta().y()
+            except AttributeError:
+                delta = QEvent.delta()
+            print delta
+            if delta > 0:
                 self.vol_up()
                 return True
-            elif QEvent.delta() < 0:
+            elif delta < 0:
                 self.vol_down()
                 return True
         return False
