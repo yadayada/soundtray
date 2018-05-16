@@ -1,4 +1,4 @@
-#!/usr/env python2
+#!/usr/bin/env python
 
 __version__ = '0.0.2'
 
