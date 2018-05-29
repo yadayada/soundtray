@@ -8,11 +8,13 @@ import sys
 from functools import partial
 
 try:
-    from PyQt5.QtGui import QIcon, QCursor, QIcon
-    from PyQt5.QtWidgets import QApplication, QMenu, QSystemTrayIcon, QInputDialog
+    from PyQt5.QtGui import QIcon, QCursor
+    from PyQt5.QtWidgets import QApplication, QDesktopWidget, QInputDialog, QMenu, QMessageBox,\
+        QSystemTrayIcon
     from PyQt5.QtCore import QCoreApplication, QPoint
 except:
-    from PyQt4.QtGui import QApplication, QSystemTrayIcon, QMenu, QMessageBox, QIcon, QInputDialog, QCursor
+    from PyQt4.QtGui import QApplication, QCursor, QDesktopWidget, QIcon, QInputDialog, QMenu,\
+        QMessageBox, QSystemTrayIcon
     from PyQt4.QtCore import QCoreApplication, QPoint
 
 # https://specifications.freedesktop.org/icon-naming-spec/icon-naming-spec-latest.html
@@ -45,6 +47,8 @@ class SystemTrayIcon(QSystemTrayIcon):
 
         self.statusAction = None
         self.srcMenu = None
+        self.screenWidth = 0
+
         self.initMenu()
         self.initDynamicActions()
         self.init_listeners()
@@ -87,6 +91,9 @@ class SystemTrayIcon(QSystemTrayIcon):
         ea.setIconVisibleInMenu(True)
         ea.triggered.connect(QCoreApplication.exit)
 
+        w = QDesktopWidget()
+        self.screenWidth = w.screenGeometry(w.primaryScreen()).right() + 1
+
         self.setContextMenu(self.menu)
         self.activated.connect(self.clicked)
 
@@ -119,6 +126,8 @@ class SystemTrayIcon(QSystemTrayIcon):
                 open_at = QCursor.pos()
                 open_at.setY(self.geometry().top())
                 open_at -= QPoint(0, self.menu.sizeHint().height())
+                if open_at.x() + self.menu.sizeHint().width() > self.screenWidth:
+                    open_at.setX(self.screenWidth - self.menu.sizeHint().width())
                 self.menu.move(open_at)
                 self.menu.show()
 
@@ -128,7 +137,6 @@ class SystemTrayIcon(QSystemTrayIcon):
                 delta = QEvent.angleDelta().y()
             except AttributeError:
                 delta = QEvent.delta()
-            print delta
             if delta > 0:
                 self.vol_up()
                 return True
