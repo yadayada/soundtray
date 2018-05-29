@@ -1,6 +1,9 @@
 # soundtray
 
-soundtray is a quick-and-dirty system tray application for controlling Bose SoundTouch devices using pyqt4 and libsoundtouch.
+<p align="center">
+<img src="soundtray.png" / ></p>
+
+soundtray is a quick-and-dirty system tray application for controlling Bose SoundTouch devices using pyqt4/5 and libsoundtouch.
 
 ## Hints
 
